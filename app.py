@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image, ImageEnhance
+from io import BytesIO
 
 def main():
     st.title("Image Upload and Filter App")
@@ -31,10 +32,14 @@ def main():
     # Display filtered image
     st.image(image_filtered, caption="Filtered Image", use_container_width=True)
         
-    # Download button
+    # Зберігаємо відфільтроване зображення в пам'яті
+    img_bytes = BytesIO()
+    image_filtered.save(img_bytes, format="PNG")
+    img_bytes.seek(0)
+
     st.download_button(
         label="Download Image",
-        data=uploaded_file.getvalue(),
+        data=img_bytes,
         file_name="filtered_image.png",
         mime="image/png"
     )
